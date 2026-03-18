@@ -1,15 +1,16 @@
-import React from "react";
+import NextLink from "./NextLink";
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-stone-200 bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <span
+        <NextLink
+          href="/"
           className="text-lg font-light italic tracking-tight text-stone-900"
           style={{ fontFamily: "var(--font-display)" }}
         >
           F-Commerce
-        </span>
+        </NextLink>
         <div className="flex items-center gap-4">
           <a
             href="/cart"
