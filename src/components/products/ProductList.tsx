@@ -1,12 +1,13 @@
 import { getProduct } from "@/actions/Product";
 import ProductCard, { type ProductCardData } from "./ProductCard";
+import NextLink from "../NextLink";
 
 export default async function ProductList() {
   const rawProducts = await getProduct();
 
   const products: ProductCardData[] = rawProducts
-    .filter((p) => p.image?.length > 0)
-    .map((p) => ({
+    .filter((p: ProductCardData) => p.image?.length > 0)
+    .map((p: ProductCardData) => ({
       id: String(p._id),
       uniq_id: p.uniq_id,
       product_name: p.product_name,
@@ -59,8 +60,14 @@ export default async function ProductList() {
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((product) => (
-          <ProductCard key={product.id ?? product.uniq_id} product={product} />
+        {products.map((product, index) => (
+          <NextLink href={`/${product.id}`} key={product.id ?? product.uniq_id}>
+            <ProductCard
+              key={product.id ?? product.uniq_id}
+              product={product}
+              index={index}
+            />
+          </NextLink>
         ))}
       </div>
     </section>

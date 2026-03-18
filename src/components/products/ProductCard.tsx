@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -24,9 +24,10 @@ export interface ProductCardData {
 
 interface ProductCardProps {
   product: ProductCardData;
+  index: number;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, index }: ProductCardProps) {
   const [imgError, setImgError] = useState(false);
 
   const primaryImage = product.image?.[0];
@@ -40,7 +41,10 @@ export default function ProductCard({ product }: ProductCardProps) {
       : 0;
 
   return (
-    <Card className="group/card flex h-full flex-col gap-0 overflow-hidden rounded-none border-0 bg-white shadow-none outline-1 outline-stone-200 transition-all duration-200 hover:outline-stone-900">
+    <Card
+      className="group/card flex h-full flex-col gap-0 overflow-hidden rounded-none border-0 bg-white shadow-none outline-1 outline-stone-200 transition-all duration-200 hover:outline-stone-900"
+      key={index}
+    >
       <div className="relative aspect-4/3 overflow-hidden bg-stone-50">
         {primaryImage && !imgError && (
           <Image
@@ -50,7 +54,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             className="object-contain p-3 transition-transform duration-500 group-hover/card:scale-[1.03]"
             onError={() => setImgError(true)}
-            unoptimized
+            quality={75}
           />
         )}
         {discount > 0 && (
