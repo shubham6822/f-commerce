@@ -1,8 +1,4 @@
-import {
-  getAllProductIds,
-  getProductById,
-  getSimilarProducts,
-} from "@/actions/Product";
+import { getProductById, getSimilarProducts } from "@/actions/Product";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import NextLink from "@/components/NextLink";
@@ -10,11 +6,6 @@ import ProductCard, {
   type ProductCardData,
 } from "@/components/products/ProductCard";
 import ProductImageGallery from "@/components/products/ProductImageGallery";
-
-export async function generateStaticParams() {
-  const ids = await getAllProductIds(); // returns ["id1", "id2", ...]
-  return ids.map((id) => ({ productId: id }));
-}
 
 export default function ProductDetailPage({
   params,
