@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from "react";
 
 // Global tracking — shared across all NextLink instances to avoid duplicate prefetches
 const prefetchedRoutes = new Set<string>();
+const prefetchedImages = new Set<string>();
 
 // Track if we already navigated via mouseDown to prevent Link's click from duplicating
 let didMouseDown = false;
@@ -38,6 +39,18 @@ export default function NextLink({
 
               // Prefetch JS bundle + RSC payload for instant navigation
               router.prefetch(hrefStr);
+              router.prefetch(hrefStr);
+
+              // Prefetch product images
+              const imagesAttr = linkElement.getAttribute("data-images");
+              if (imagesAttr) {
+                try {
+                  const images: string[] = JSON.parse(imagesAttr);
+                  images.forEach((src) => prefetchImage(src));
+                } catch {
+                  /* ignore parse errors */
+                }
+              }
             }
             observer.unobserve(entry.target);
           }, 300);
@@ -68,6 +81,16 @@ export default function NextLink({
         if (!prefetchedRoutes.has(hrefStr)) {
           prefetchedRoutes.add(hrefStr);
           router.prefetch(hrefStr);
+          // Prefetch images on hover too
+          const imagesAttr = linkRef.current?.getAttribute("data-images");
+          if (imagesAttr) {
+            try {
+              const images: string[] = JSON.parse(imagesAttr);
+              images.forEach((src) => prefetchImage(src));
+            } catch {
+              /* ignore */
+            }
+          }
         }
       }}
       onMouseDown={(e) => {
@@ -98,4 +121,19 @@ export default function NextLink({
       {children}
     </Link>
   );
+}
+
+const PREFETCH_WIDTHS = [640, 64, 750];
+
+function prefetchImage(rawSrc: string, quality: number = 75) {
+  for (const width of PREFETCH_WIDTHS) {
+    const optimizedUrl = `/_next/image?url=${encodeURIComponent(rawSrc)}&w=${width}&q=${quality}`;
+    if (prefetchedImages.has(optimizedUrl)) continue;
+    prefetchedImages.add(optimizedUrl);
+
+    const img = new Image();
+    img.decoding = "async";
+    img.fetchPriority = "high";
+    img.src = optimizedUrl;
+  }
 }

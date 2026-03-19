@@ -33,7 +33,7 @@ export default function ProductImageGallery({
             priority
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 55vw"
             className="object-contain p-6 transition-opacity duration-300"
-            quality={90}
+            quality={75}
             onError={() =>
               setErrored((prev) => ({ ...prev, [safeIndex]: true }))
             }
@@ -78,7 +78,7 @@ export default function ProductImageGallery({
                     fill
                     sizes="56px"
                     className="object-contain p-1.5"
-                    quality={50}
+                    quality={75}
                     onError={() =>
                       setErrored((prev) => ({ ...prev, [i]: true }))
                     }

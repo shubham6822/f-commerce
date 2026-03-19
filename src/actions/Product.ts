@@ -50,3 +50,12 @@ export const getSimilarProducts = async function getSimilarProducts(
 
   return JSON.parse(JSON.stringify(products));
 };
+
+export async function getAllProductIds(): Promise<string[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("products");
+  await connectToDatabase();
+  const products = await Product.find({}, { _id: 1 }).lean();
+  return products.map((p) => String(p._id));
+}

@@ -62,7 +62,11 @@ export default async function ProductList() {
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {products.map((product, index) => (
-          <NextLink href={`/${product.id}`} key={product.id ?? product.uniq_id}>
+          <NextLink
+            href={`/${product.id}`}
+            key={product.id ?? product.uniq_id}
+            data-images={JSON.stringify(product.image)}
+          >
             <ProductCard
               key={product.id ?? product.uniq_id}
               product={product}
