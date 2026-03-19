@@ -7,7 +7,8 @@ export default async function ProductList() {
 
   const products: ProductCardData[] = rawProducts
     .filter((p: ProductCardData) => p.image?.length > 0)
-    .map((p: ProductCardData) => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .map((p: any) => ({
       id: String(p._id),
       uniq_id: p.uniq_id,
       product_name: p.product_name,
@@ -61,11 +62,7 @@ export default async function ProductList() {
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {products.map((product, index) => (
-          <NextLink
-            href={`/${product.id}`}
-            key={product.id ?? product.uniq_id}
-            pfetch={true}
-          >
+          <NextLink href={`/${product.id}`} key={product.id ?? product.uniq_id}>
             <ProductCard
               key={product.id ?? product.uniq_id}
               product={product}
